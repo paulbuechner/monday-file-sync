@@ -564,10 +564,10 @@
   resolved "https://registry.yarnpkg.com/@types/monday-sdk-js/-/monday-sdk-js-0.1.2.tgz#f73d6dbe2e695f066ce6d99013e2fe1d9e221b36"
   integrity sha512-Jz7QoJFWm44RLvbbS8+6lLC6lBdgzUhkYLBYBtskswmXgidvGgnESOrkz7jV3VbP0sFfQI4jPoEWOopqQixv9g==
 
-"@types/node-fetch@2.5.11":
-  version "2.5.11"
-  resolved "https://registry.yarnpkg.com/@types/node-fetch/-/node-fetch-2.5.11.tgz#ce22a2e65fc8999f4dbdb7ddbbcf187d755169e4"
-  integrity sha512-2upCKaqVZETDRb8A2VTaRymqFBEgH8u6yr96b/u3+1uQEPDRo3mJLEiPk7vdXBHRtjwkjqzFYMJXrt0Z9QsYjQ==
+"@types/node-fetch@2.5.12":
+  version "2.5.12"
+  resolved "https://registry.yarnpkg.com/@types/node-fetch/-/node-fetch-2.5.12.tgz#8a6f779b1d4e60b7a57fb6fd48d84fb545b9cc66"
+  integrity sha512-MKgC4dlq4kKNa/mYrwpKfzQMB5X3ee5U6fSprkKpToBqBmX4nFZL9cW5jl6sWn+xpRJ7ypWh2yyqqr8UUCstSw==
   dependencies:
     "@types/node" "*"
     form-data "^3.0.0"
