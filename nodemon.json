@@ -1,7 +1,5 @@
-
 {
-  "script": "src/app.ts",
   "verbose": true,
-  "watch": ["src/**/*.txt", "src/**/*.ts"],
-  "ext": "js, ts, txt"
+  "watch": ["index.ts"],
+  "ext": "js, ts"
 }
