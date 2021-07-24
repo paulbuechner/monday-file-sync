@@ -1,6 +1,6 @@
 import mondaySdk from "monday-sdk-js";
 
-import { MONDAY_API_KEY } from "./constants";
+import { MONDAY_API_KEY } from "../utils/constants";
 
 const monday = mondaySdk();
 monday.setToken(MONDAY_API_KEY!);

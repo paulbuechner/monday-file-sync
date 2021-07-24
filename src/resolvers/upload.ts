@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import "dotenv-safe/config";
 import fs from "fs";
 import fetch from "node-fetch";

@@ -1,7 +1,7 @@
 import "dotenv-safe/config";
 import chokidar from "chokidar";
 
-import { logging } from "./utils/log";
+import { logging } from "./resolvers/log";
 
 // Initialize watcher.
 const watcher = chokidar.watch("src/sfi", {
