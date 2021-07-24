@@ -11,6 +11,7 @@ const tsOverrideConfig = {
     hasReact: false,
   },
   rules: {
+    'no-console': 'off',
     '@typescript-eslint/no-non-null-assertion': 'off',
     '@typescript-eslint/no-unnecessary-type-assertion': 'off',
     '@typescript-eslint/no-misused-promises': 'error',
