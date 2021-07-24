@@ -21,7 +21,7 @@
     "source.fixAll.eslint": true
   },
   "eslint.workingDirectories": [
-    ".",
+    "./api",
   ],
   "typescript.tsdk": "node_modules\\typescript\\lib"
 }

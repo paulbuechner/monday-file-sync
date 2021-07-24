@@ -4,9 +4,7 @@ import fetch from "node-fetch";
 
 import { MONDAY_API_KEY } from "../utils/constants";
 
-const upfile = "src/sfi/1.txt";
-
-export async function upload(): Promise<void> {
+export async function upload(file: string): Promise<void> {
   // set auth token and query
   const query =
     'mutation ($file: File!) { add_file_to_column (file: $file, item_id: 1507965378, column_id: "datei") { id } }';
@@ -17,7 +15,7 @@ export async function upload(): Promise<void> {
   let data = "";
 
   // eslint-disable-next-line @typescript-eslint/no-misused-promises
-  fs.readFile(upfile, async (err, content) => {
+  fs.readFile(file, async (err, content) => {
     // simple catch error
     if (err) {
       console.error(err);
@@ -33,7 +31,7 @@ export async function upload(): Promise<void> {
 
     // construct file part
     data += `--${boundary}\r\n`;
-    data += `Content-Disposition: form-data; name="variables[file]"; filename="${upfile}"\r\n`;
+    data += `Content-Disposition: form-data; name="variables[file]"; filename="${file}"\r\n`;
     data += "Content-Type:application/octet-stream\r\n\r\n";
 
     const payload = Buffer.concat([
