@@ -12,13 +12,13 @@
     "build": "tsc",
     "watch": "tsc -w",
     "start": "ts-node src/index.ts",
-    "dev-js": "nodemon .dist/src/index.js",
-    "dev-ts": "nodemon --exec ts-node src/index.ts",
+    "dev": "nodemon --exec ts-node src/index.ts",
     "gen:env": "npx gen-env-types .env -o env.d.ts -e .",
     "postinstall": "husky install"
   },
   "dependencies": {
     "@types/monday-sdk-js": "0.1.2",
+    "chokidar": "^3.5.2",
     "cors": "2.8.5",
     "dotenv-safe": "8.2.0",
     "express": "4.17.1",
