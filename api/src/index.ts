@@ -6,7 +6,7 @@ import { logging } from "./resolvers/log";
 import { upload } from "./resolvers/upload";
 
 // Initialize watcher.
-const watcher = chokidar.watch("src/__tests__", {
+const watcher = chokidar.watch("__tests__", {
   ignored: /(^|[/\\])\../u, // ignore dotfiles
   persistent: true,
 });
