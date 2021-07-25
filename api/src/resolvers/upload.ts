@@ -1,4 +1,3 @@
-import "dotenv-safe/config";
 import fs from "fs";
 import fetch from "node-fetch";
 
@@ -14,50 +13,45 @@ export async function upload(file: string): Promise<void> {
   const boundary = "xxx-1234";
   let data = "";
 
-  // eslint-disable-next-line @typescript-eslint/no-misused-promises
-  fs.readFile(file, async (err, content) => {
-    // simple catch error
-    if (err) {
-      console.error(err);
-    }
+  // read file
+  const content = fs.readFileSync(file);
+  // console.log(content);
 
-    console.log(content);
+  // construct query part
+  data += `--${boundary}\r\n`;
+  data += 'Content-Disposition: form-data; name="query"; \r\n';
+  data += "Content-Type:application/json\r\n\r\n";
+  data += `\r\n${query}\r\n`;
 
-    // construct query part
-    data += `--${boundary}\r\n`;
-    data += 'Content-Disposition: form-data; name="query"; \r\n';
-    data += "Content-Type:application/json\r\n\r\n";
-    data += `\r\n${query}\r\n`;
+  // construct file part
+  data += `--${boundary}\r\n`;
+  data += `Content-Disposition: form-data; name="variables[file]"; filename="${file}"\r\n`;
+  data += "Content-Type:application/octet-stream\r\n\r\n";
 
-    // construct file part
-    data += `--${boundary}\r\n`;
-    data += `Content-Disposition: form-data; name="variables[file]"; filename="${file}"\r\n`;
-    data += "Content-Type:application/octet-stream\r\n\r\n";
+  const payload = Buffer.concat([
+    Buffer.from(data, "utf8"),
+    Buffer.from(content as unknown as string, "binary"),
+    Buffer.from(`\r\n--${boundary}--\r\n`, "utf8"),
+  ]);
 
-    const payload = Buffer.concat([
-      Buffer.from(data, "utf8"),
-      Buffer.from(content as unknown as string, "binary"),
-      Buffer.from(`\r\n--${boundary}--\r\n`, "utf8"),
-    ]);
+  // construct request options
+  const options = {
+    method: "post",
+    headers: {
+      "Content-Type": `multipart/form-data; boundary=${boundary}`,
+      Authorization: MONDAY_API_KEY!,
+    },
+    body: payload,
+  };
 
-    // construct request options
-    const options = {
-      method: "post",
-      headers: {
-        "Content-Type": `multipart/form-data; boundary=${boundary}`,
-        Authorization: MONDAY_API_KEY!,
-      },
-      body: payload,
-    };
-
-    // make request
-    await fetch(url, options)
-      .then((res) => res.json())
-      .catch((error) => {
-        console.log(error);
-      })
-      .then((json) => {
-        console.log(json);
-      });
-  });
+  // make request
+  try {
+    const res = await fetch(url, options);
+    // check response
+    const json = await res.json();
+    console.log(json);
+  } catch (error) {
+    // handle error
+    console.log("error:", error);
+  }
 }
