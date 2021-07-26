@@ -14,7 +14,7 @@ export async function upload(file: string): Promise<void> {
   let data = "";
 
   // read file
-  const content = fs.readFileSync(file);
+  const content = await fs.promises.readFile(file);
   // console.log(content);
 
   // construct query part
