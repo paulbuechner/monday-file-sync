@@ -11,13 +11,15 @@
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
+    "watch:file": "nodemon -r dotenv/config --exec ts-node",
     "start": "ts-node src/index.ts",
-    "dev": "nodemon --exec ts-node src/index.ts",
+    "dev": "nodemon --watch 'index.ts' --exec ts-node src/index.ts --verbose",
     "gen:env": "npx gen-env-types .env -o env.d.ts -e ."
   },
   "dependencies": {
     "chokidar": "3.5.2",
     "cors": "2.8.5",
+    "date-fns": "^2.23.0",
     "dotenv-safe": "8.2.0",
     "express": "4.17.1",
     "express-session": "1.17.2",
