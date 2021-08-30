@@ -15,6 +15,7 @@ const tsOverrideConfig = {
     '@typescript-eslint/no-misused-promises': 'error',
     'promise/no-promise-in-callback': 'off',
     'promise/prefer-await-to-callbacks': 'off',
+    '@typescript-eslint/restrict-template-expressions': 'off'
   },
   typescript: {
     hasTypeScript: true,
