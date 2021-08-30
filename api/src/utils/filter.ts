@@ -13,7 +13,7 @@ export type FilterProps = {
  * - type: fileextension / type
  *
  * @example <caption>Example usage of filterPath.</caption>
- * const filteredPath = filterPath("foo/bar/foobar.pdf")
+ * const filteredPath = filterPath("foo\\bar\\foobar.pdf")
  * // returns { dir: "bar", filename: "foobar", type: "pdf" }
  *
  * @param {string} path - The filepath to be destructured.
@@ -88,8 +88,8 @@ export function filterItems(
 
   // If no location to put the new file was found, return the first id
   // of the "datei" column to put the new file in
-  if (!filteredItems || filterItems.length > 1) {
-    console.log(
+  if (!filteredItems || filteredItems.length > 1) {
+    console.warn(
       "⚠ Upload directory could not be localized. Uploading to first item..."
     );
     return { id: items[0].id };
