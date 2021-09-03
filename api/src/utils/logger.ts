@@ -1,7 +1,7 @@
 import { format } from "date-fns";
 import winston, { format as _format, transports as _transports } from "winston";
 
-import { DATE_FORMAT, DATE_HOUR_FORMAT } from "../constants";
+import { DATE_FORMAT, DATE_HOUR_FORMAT, LOG_DIR_PREFIX } from "../constants";
 
 const config: winston.config.AbstractConfigSet = {
   levels: {
@@ -37,7 +37,9 @@ const customFormat = winston.format.printf((i) => {
 const customJSONFormat = winston.format.printf((i) => {
   return `{"level":"${i.level}","timestamp":"${
     i.timestamp
-  }","path":"${i.message.replace("\\", "\\\\")}"}`;
+  }","msg":"${i.message.replace(/\\/gu, "\\\\")}","additional_info":"${
+    i.additional_info
+  }"}`;
 });
 
 const errorFilter = winston.format((info, _) => {
@@ -69,7 +71,10 @@ export const logger: CustomLevels = winston.createLogger({
     // - Write all logs with level `info` and below to `logs/combined/combined.log`
     //
     new _transports.File({
-      filename: `logs/change/change-${format(new Date(), DATE_FORMAT)}.log`,
+      filename: `logs/${LOG_DIR_PREFIX}/change/change-${format(
+        new Date(),
+        DATE_FORMAT
+      )}.log`,
       format: _format.combine(
         _format.timestamp({
           format: DATE_HOUR_FORMAT,
@@ -79,29 +84,47 @@ export const logger: CustomLevels = winston.createLogger({
       ),
     }),
     new _transports.File({
-      filename: `logs/upload/upload-${format(new Date(), DATE_FORMAT)}.log`,
+      filename: `logs/${LOG_DIR_PREFIX}/upload/upload-${format(
+        new Date(),
+        DATE_FORMAT
+      )}.log`,
       format: _format.combine(
         _format.timestamp({
           format: DATE_HOUR_FORMAT,
         }),
         uploadFilter(),
-        customFormat
+        customJSONFormat
       ),
     }),
     new _transports.File({
-      filename: `logs/error/error-${format(new Date(), DATE_FORMAT)}.log`,
+      filename: `logs/${LOG_DIR_PREFIX}/error/error-${format(
+        new Date(),
+        DATE_FORMAT
+      )}.log`,
       level: "error",
       format: _format.combine(
         _format.timestamp({
           format: DATE_HOUR_FORMAT,
         }),
         errorFilter(),
-        customFormat
+        customJSONFormat
       ),
     }),
     new _transports.File({
-      filename: `logs/combined/combined-${format(new Date(), DATE_FORMAT)}.log`,
+      filename: `logs/${LOG_DIR_PREFIX}/combined/combined-${format(
+        new Date(),
+        DATE_FORMAT
+      )}.log`,
       format: _format.combine(
+        _format.timestamp({
+          format: DATE_HOUR_FORMAT,
+        }),
+        customFormat
+      ),
+    }),
+    new _transports.Console({
+      format: _format.combine(
+        _format.colorize(),
         _format.timestamp({
           format: DATE_HOUR_FORMAT,
         }),
@@ -111,21 +134,3 @@ export const logger: CustomLevels = winston.createLogger({
   ],
   exitOnError: false,
 }) as CustomLevels;
-
-//
-// If we're not in production then log to the `console` with the format:
-// `${info.level}: ${info.message} JSON.stringify({ ...rest }) `
-//
-if (process.env.NODE_ENV !== "production") {
-  logger.add(
-    new _transports.Console({
-      format: _format.combine(
-        _format.colorize(),
-        _format.timestamp({
-          format: "YYYY-MM-DD HH:mm:ss",
-        }),
-        _format.printf((i) => `${i.timestamp} ${i.level}: ${i.message}`)
-      ),
-    })
-  );
-}
