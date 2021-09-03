@@ -13,7 +13,8 @@
     "gen:env": "npx gen-env-types .env -o env.d.ts -e .",
     "build": "tsc",
     "watch": "tsc -w",
-    "watch:file": "nodemon -r dotenv/config --exec ts-node",
+    "watch:file:dev": "nodemon -r dotenv/config --exec ts-node",
+    "watch:file:prod": "set NODE_ENV=production && nodemon -r dotenv/config --exec ts-node",
     "start": "set NODE_ENV=production && node dist/index.js",
     "start:ts": "set NODE_ENV=production && ts-node src/index.ts",
     "dev": "nodemon --watch 'index.ts' --exec ts-node src/index.ts --verbose"
