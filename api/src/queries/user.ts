@@ -10,27 +10,28 @@ type UsersQueryResponse =
           name: string;
         }[];
       };
+      errors: { message: string; locations: unknown[] }[];
     }
   | undefined;
 
 type UserProps = { id: string; name: string };
 
 export async function getAllUsers(): Promise<UserProps[] | undefined> {
-  try {
-    const res: UsersQueryResponse = await monday.api(
-      `query {
+  const res: UsersQueryResponse = await monday.api(
+    `query {
         users {
           id
           name
         }
       }`
-    );
+  );
 
-    // console.log(res?.data.users);
+  if (res?.errors) {
+    console.log(res.errors);
+  }
 
-    return res?.data.users;
-  } catch (error) {
-    console.log(error);
+  if (res?.data) {
+    return res.data.users;
   }
 
   return undefined;

@@ -5,20 +5,24 @@ import fetch from "node-fetch";
 import {
   API_V2_FILE_ENDPOINT,
   DATE_FORMAT,
-  MONDAY_API_KEY,
+  DEV_MONDAY_API_KEY,
+  PROD_MONDAY_API_KEY,
+  __prod__,
 } from "../constants";
+import type { FileUploadMutationResponse } from "../mutations/board";
 import { uploadFile } from "../mutations/board";
-import type { FilteredItemsProps, FilterProps } from "../utils/filter";
-
-type FileUploadRespones = FilteredItemsProps;
+import type { UploadDirProps } from "../utils/getUploadDir";
+import { logger } from "../utils/logger";
 
 export async function fileUpload(
   file: string,
-  item_id: string,
-  filteredPath: FilterProps
-): Promise<FileUploadRespones | undefined> {
+  dir: UploadDirProps
+): Promise<FileUploadMutationResponse | undefined> {
   // set query
-  const query = uploadFile(item_id);
+  const query = uploadFile(
+    dir.filteredItems.id,
+    dir.filteredItems.column_values[0].column_id
+  );
 
   // set URL and boundary
   const url = API_V2_FILE_ENDPOINT;
@@ -31,8 +35,8 @@ export async function fileUpload(
 
   // construct filename
   const filename = `${format(new Date(), DATE_FORMAT)}_${
-    filteredPath.filename
-  }.${filteredPath.type}`;
+    dir.filteredPath.filename
+  }.${dir.filteredPath.type}`;
 
   // construct query part
   data += `--${boundary}\r\n`;
@@ -56,7 +60,7 @@ export async function fileUpload(
     method: "post",
     headers: {
       "Content-Type": `multipart/form-data; boundary=${boundary}`,
-      Authorization: MONDAY_API_KEY!,
+      Authorization: __prod__ ? PROD_MONDAY_API_KEY! : DEV_MONDAY_API_KEY!,
     },
     body: payload,
   };
@@ -64,14 +68,23 @@ export async function fileUpload(
   // make request
   try {
     const res = await fetch(url, options);
-    const json = await res.json();
-    console.info(
-      `Upload Successfully ✅ \n\n ${JSON.stringify(json, null, 2)}`
+    const json: FileUploadMutationResponse = await res.json();
+
+    logger.upload(
+      `✅ File has been uploaded succesfully. <br> • ${json.data.add_file_to_column.name} <br><br> Please update the Board accordingly.`,
+      {
+        additional_info: dir.boardId,
+      }
     );
 
     return json;
   } catch (error) {
-    console.error("error:", error);
+    logger.error(
+      `⛔ Oh no! Something went wrong: ${error} <br> • ${file} <br><br> Please Update the Board manually.`,
+      {
+        additional_info: dir.boardId,
+      }
+    );
 
     return undefined;
   }

@@ -4,22 +4,28 @@ const monday = mondayClient();
 
 type BoardsQueryResponse =
   | {
-      data: { boards: { id: string; name: string }[] };
+      data: { boards: BoardsProps[] };
+      errors: { message: string; locations: unknown[] }[];
       account_id: string;
     }
   | undefined;
 
-type BoardsProps = { id: string; name: string };
+export type BoardsProps = { id: string; description: string };
 
 export async function getAllBoards(): Promise<BoardsProps[] | undefined> {
   const res: BoardsQueryResponse = await monday.api(
     `query {
-      boards {
+      boards (limit: 1000) {
         id
-        name
+        description
       }
     }`
   );
+
+  if (res?.errors) {
+    console.log(res.errors);
+  }
+
   if (res?.data) {
     return res.data.boards;
   }
@@ -32,7 +38,8 @@ type BoardQueryResponse =
       data: {
         boards: BoardProps[];
       };
-      account_id: string;
+      errors: { message: string; locations: unknown[] }[];
+      account_id: number;
     }
   | undefined;
 
@@ -44,6 +51,7 @@ export type ItemProps = {
 };
 
 type BoardProps = {
+  id: string;
   groups: { title: string }[];
   items: ItemProps[];
 };
@@ -54,6 +62,7 @@ export async function getItems(
   const res: BoardQueryResponse = await monday.api(
     `query {
       boards(ids: [${boardId}]) {
+        id
         groups {
           title
         }
@@ -64,7 +73,7 @@ export async function getItems(
             title
             color
           }
-          column_values(ids: "datei") {
+          column_values {
             id
             value
           }
@@ -73,11 +82,13 @@ export async function getItems(
     }`
   );
 
+  if (res?.errors) {
+    console.log(res.errors);
+  }
+
   if (res?.data) {
     return res.data.boards[0];
   }
 
   return undefined;
 }
-
-// getItems("1507965305");

@@ -3,28 +3,27 @@ import "dotenv-safe/config";
 import { watch } from "chokidar";
 import schedule from "node-schedule";
 
-// import { WATCH_PATH } from "./constants";
+import { DEV_WATCH_PATH, PROD_WATCH_PATH, __prod__ } from "./constants";
 import { handleUpload } from "./utils/handleUpload";
 import { logger } from "./utils/logger";
 
 // Initialize watcher.
-const watcher = watch(
-  // absolute or relative path WATCH_PATH!
-  "__tests__",
-  {
-    ignored: /(^|[/\\])\../u, // ignore dotfiles
-    persistent: true,
-  }
-);
+const watcher = watch(__prod__ ? PROD_WATCH_PATH! : DEV_WATCH_PATH!, {
+  ignored: /(^|[/\\])\../u, // ignore dotfiles
+  persistent: true,
+});
 
 // One-liner for current directory
 watcher.on("change", (event, _) => {
-  console.info(event);
-  console.log("Start batching...");
+  console.log("batching...");
 
-  setTimeout(() => {
-    logger.change(event);
-  }, 100);
+  setTimeout(
+    () => {
+      logger.change(event);
+    },
+    // batching in prod 5sec
+    __prod__ ? 5000 : 100
+  );
 });
 
 /*  *    *    *    *    *    *
@@ -37,8 +36,6 @@ watcher.on("change", (event, _) => {
  *  │    └──────────────────── minute (0 - 59)
  *  └───────────────────────── second (0 - 59, OPTIONAL)
  */
-schedule.scheduleJob("10 * * * * *", () => {
-  console.log("The answer to life, the universe, and everything!");
-
+schedule.scheduleJob("* * 2 * * *", () => {
   handleUpload();
 });

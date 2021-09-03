@@ -27,7 +27,7 @@ export function filterPath(path: string): FilterProps | undefined {
   if (groups) {
     const [, dir, filename, type] = groups;
 
-    return { dir, filename, type };
+    return { dir: dir.slice(0, 5), filename, type };
   }
   return undefined;
 }
@@ -37,15 +37,16 @@ export type ValueProps = {
   assetId: number;
   isImage: string;
   fileType: string;
+  column_id: string;
 };
 
 type FileValueProps = {
-  files: ValueProps[];
+  files?: ValueProps[];
 };
 
 export type FilteredItemsProps = {
   id: string;
-  column_values?: ValueProps[];
+  column_values: ValueProps[];
 };
 
 /**
@@ -53,7 +54,7 @@ export type FilteredItemsProps = {
  *
  * @example <caption>Example usage of filterItems.</caption>
  * const filteredItems = filterItems(items, "foobar")
- * // returns { id: string, column_values?: ValueProps[] }
+ * // returns { id: string, column_values: ValueProps[] }
  *
  * @param {Array} items - Array of items used for filtering.
  * @param {string} filename - The filename to filter for.
@@ -63,15 +64,20 @@ export type FilteredItemsProps = {
 export function filterItems(
   items: ItemProps[],
   filename: string
-): FilteredItemsProps {
+): FilteredItemsProps | undefined {
   const filteredItems = items.flatMap((item) => {
     // get all column values for given filename
     const filteredColumnValues = item.column_values.flatMap((col) => {
       if (col.value) {
-        const { files }: FileValueProps = JSON.parse(col.value);
-
-        // filter all column values where file includes filename
-        return files.filter((f) => f.name.includes(filename));
+        const meta: FileValueProps = JSON.parse(col.value);
+        if (meta.files) {
+          // filter all column values where file includes filename
+          return meta.files.filter((m) => {
+            if (m.name?.includes(filename)) {
+              return Object.assign(m, { column_id: col.id });
+            }
+          });
+        }
       }
       // else return empty array
       return [];
@@ -86,13 +92,18 @@ export function filterItems(
     return [];
   });
 
-  // If no location to put the new file was found, return the first id
-  // of the "datei" column to put the new file in
-  if (!filteredItems || filteredItems.length > 1) {
+  // Error when no upload location was found
+  if (filteredItems.length === 0) {
+    return undefined;
+  }
+
+  // If no specific location to put the new file was found, return the first id
+  // of the diagramm column to put the new file in
+  if (filteredItems.length > 1) {
     console.warn(
       "⚠ Upload directory could not be localized. Uploading to first item..."
     );
-    return { id: items[0].id };
+    return filteredItems[0];
   }
 
   return filteredItems[0];
