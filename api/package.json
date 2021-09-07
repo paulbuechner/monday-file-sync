@@ -1,9 +1,9 @@
 {
-  "name": "monday-file-sync",
+  "name": "api",
   "version": "1.0.0",
   "license": "MIT",
-  "repository": "https://github.com/paulbuechner/monday-file-sync.git",
-  "description": "🔁 Node script keeping local files synchronized with your monday dashboards.",
+  "repository": "https://github.com/paulbuechner/monday-file-sync/tree/main/api",
+  "description": "API to handle and resolve the uploads.",
   "author": {
     "name": "Paul Büchner",
     "email": "paul-buechner@outlook.de",
@@ -17,6 +17,12 @@
     "watch:file:prod": "set NODE_ENV=production && nodemon -r dotenv/config --exec ts-node",
     "start": "set NODE_ENV=production && node dist/index.js",
     "start:ts": "set NODE_ENV=production && ts-node src/index.ts",
+    "pm2:start:prod": "pm2 start pm2.config.js --env production",
+    "pm2:restart:prod": "pm2 delete API && pm2 start pm2.config.js --env production",
+    "pm2:start:dev": "pm2 start pm2.config.js --env development",
+    "pm2:restart:dev": "pm2 delete API && pm2 start pm2.config.js --env development",
+    "pm2:stop": "pm2 stop pm2.config.js",
+    "pm2:delete": "pm2 delete pm2.config.js",
     "dev": "nodemon --watch 'index.ts' --exec ts-node src/index.ts --verbose"
   },
   "dependencies": {
@@ -48,5 +54,10 @@
   },
   "optionalDependencies": {
     "fsevents": "2.3.2"
+  },
+  "comments": {
+    "global dependencies": {
+      "pm2": "npm install pm2 -g"
+    }
   }
 }
