@@ -9,13 +9,12 @@ import { sendNotificationReport } from "./notificationReport";
 
 // file upload handler
 export async function handleUpload(): Promise<void> {
-  // get upload position for file
+  // read in file changes
   const files = await readLogs(LOG_CHANGE_PATH);
 
   if (files) {
     // get all boards
     const boards = await getAllBoards();
-    // console.log(boards);
 
     // when boards is undefined -> throw ERROR
     if (!boards) {
@@ -34,11 +33,11 @@ export async function handleUpload(): Promise<void> {
         await fileUpload(f.msg, dir);
       }
     }
-
-    // send notifications
-    await sendNotificationReport();
   }
+
+  // send notifications
+  await sendNotificationReport();
 }
 
 // eslint-disable-next-line @typescript-eslint/no-floating-promises
-handleUpload();
+// handleUpload();

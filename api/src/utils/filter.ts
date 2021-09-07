@@ -27,7 +27,7 @@ export function filterPath(path: string): FilterProps | undefined {
   if (groups) {
     const [, dir, filename, type] = groups;
 
-    return { dir: dir.slice(0, 5), filename, type };
+    return { dir, filename, type };
   }
   return undefined;
 }
