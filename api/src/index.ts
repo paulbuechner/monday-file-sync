@@ -13,7 +13,7 @@ const watcher = watch(
   __prod__ ? `${PROD_WATCH_PATH!}/**/*.pdf` : `${DEV_WATCH_PATH!}/**/*.pdf`,
   {
     persistent: true,
-    awaitWriteFinish: true,
+    awaitWriteFinish: { stabilityThreshold: 5000 },
   }
 );
 
