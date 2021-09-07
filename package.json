@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "license": "MIT",
   "repository": "https://github.com/paulbuechner/monday-file-sync.git",
+  "description": "🔁 Node script keeping local files synchronized with your monday dashboards.",
   "author": {
     "name": "Paul Büchner",
     "email": "paul-buechner@outlook.de",
-    "url": "https://paulbuechner.com"
+    "url": "https://buechner.io"
   },
   "scripts": {
     "build": "tsc",
