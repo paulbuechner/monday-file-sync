@@ -9,15 +9,15 @@ import { logger } from "./utils/logger";
 
 // Initialize watcher.
 const watcher = watch(
-  // only watch pdf
   __prod__ ? `${PROD_WATCH_PATH!}/**/*.pdf` : `${DEV_WATCH_PATH!}/**/*.pdf`,
   {
     persistent: true,
-    awaitWriteFinish: { stabilityThreshold: 5000 },
+    usePolling: true,
+    awaitWriteFinish: { stabilityThreshold: 4000, pollInterval: 100 },
   }
 );
 
-// One-liner for current directory
+// Log detected file changes
 watcher.on("change", (event, _) => {
   logger.change(event);
 });
