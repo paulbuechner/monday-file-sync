@@ -105,7 +105,8 @@ To test individual functionalities run: `npm run watch:file:dev path/to/file` (r
 
 ## Flowchart
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+![diagram](https://user-images.githubusercontent.com/45827409/132483419-69923a0c-28d5-47f3-8e61-f6f9675c6fdb.png)
+
 
 ## Contributing
 
