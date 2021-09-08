@@ -1,8 +1,13 @@
-import { format } from "date-fns";
 import winston, { format as _format, transports as _transports } from "winston";
+import DailyRotateFile from "winston-daily-rotate-file";
 
-import { DATE_FORMAT, DATE_HOUR_FORMAT, LOG_DIR_PREFIX } from "../constants";
+import {
+  DATE_FORMAT_MOMENT,
+  DATE_HOUR_FORMAT,
+  LOG_DIR_PREFIX,
+} from "../constants";
 
+// levels
 const config: winston.config.AbstractConfigSet = {
   levels: {
     emerg: 0,
@@ -30,6 +35,7 @@ const config: winston.config.AbstractConfigSet = {
   },
 };
 
+// formats
 const customFormat = winston.format.printf((i) => {
   return `${i.level.toUpperCase()}: ${i.timestamp} ${i.message}`;
 });
@@ -54,6 +60,70 @@ const uploadFilter = winston.format((info, _) => {
   return info.level === "upload" ? info : false;
 });
 
+// file rotation
+const changeTransport: DailyRotateFile = new DailyRotateFile({
+  filename: "change-%DATE%.log",
+  dirname: `logs/${LOG_DIR_PREFIX}/change`,
+  datePattern: DATE_FORMAT_MOMENT,
+  zippedArchive: false,
+  maxSize: "20m",
+  maxFiles: "14d",
+  format: _format.combine(
+    _format.timestamp({
+      format: DATE_HOUR_FORMAT,
+    }),
+    changeFilter(),
+    customJSONFormat
+  ),
+});
+
+const combinedTransport: DailyRotateFile = new DailyRotateFile({
+  filename: "combined-%DATE%.log",
+  dirname: `logs/${LOG_DIR_PREFIX}/combined`,
+  datePattern: DATE_FORMAT_MOMENT,
+  zippedArchive: false,
+  maxSize: "20m",
+  maxFiles: "14d",
+  format: _format.combine(
+    _format.timestamp({
+      format: DATE_HOUR_FORMAT,
+    }),
+    customFormat
+  ),
+});
+
+const errorTransport: DailyRotateFile = new DailyRotateFile({
+  filename: "error-%DATE%.log",
+  dirname: `logs/${LOG_DIR_PREFIX}/error`,
+  datePattern: DATE_FORMAT_MOMENT,
+  zippedArchive: false,
+  maxSize: "20m",
+  maxFiles: "14d",
+  format: _format.combine(
+    _format.timestamp({
+      format: DATE_HOUR_FORMAT,
+    }),
+    errorFilter(),
+    customJSONFormat
+  ),
+});
+
+const uploadTransport: DailyRotateFile = new DailyRotateFile({
+  filename: "upload-%DATE%.log",
+  dirname: `logs/${LOG_DIR_PREFIX}/upload`,
+  datePattern: DATE_FORMAT_MOMENT,
+  zippedArchive: false,
+  maxSize: "20m",
+  maxFiles: "14d",
+  format: _format.combine(
+    _format.timestamp({
+      format: DATE_HOUR_FORMAT,
+    }),
+    uploadFilter(),
+    customJSONFormat
+  ),
+});
+
 winston.addColors(config.colors);
 
 // extend types with custom levels
@@ -66,62 +136,10 @@ export const logger: CustomLevels = winston.createLogger({
   level: "upload",
   levels: config.levels,
   transports: [
-    //
-    // - Write all logs with level `error` and below to `logs/error/error.log`
-    // - Write all logs with level `info` and below to `logs/combined/combined.log`
-    //
-    new _transports.File({
-      filename: `logs/${LOG_DIR_PREFIX}/change/change-${format(
-        new Date(),
-        DATE_FORMAT
-      )}.log`,
-      format: _format.combine(
-        _format.timestamp({
-          format: DATE_HOUR_FORMAT,
-        }),
-        changeFilter(),
-        customJSONFormat
-      ),
-    }),
-    new _transports.File({
-      filename: `logs/${LOG_DIR_PREFIX}/upload/upload-${format(
-        new Date(),
-        DATE_FORMAT
-      )}.log`,
-      format: _format.combine(
-        _format.timestamp({
-          format: DATE_HOUR_FORMAT,
-        }),
-        uploadFilter(),
-        customJSONFormat
-      ),
-    }),
-    new _transports.File({
-      filename: `logs/${LOG_DIR_PREFIX}/error/error-${format(
-        new Date(),
-        DATE_FORMAT
-      )}.log`,
-      level: "error",
-      format: _format.combine(
-        _format.timestamp({
-          format: DATE_HOUR_FORMAT,
-        }),
-        errorFilter(),
-        customJSONFormat
-      ),
-    }),
-    new _transports.File({
-      filename: `logs/${LOG_DIR_PREFIX}/combined/combined-${format(
-        new Date(),
-        DATE_FORMAT
-      )}.log`,
-      format: _format.combine(
-        _format.timestamp({
-          format: DATE_HOUR_FORMAT,
-        }),
-        customFormat
-      ),
-    }),
+    changeTransport,
+    combinedTransport,
+    errorTransport,
+    uploadTransport,
     new _transports.Console({
       format: _format.combine(
         _format.colorize(),

@@ -4,6 +4,7 @@ export const __prod__ = (process.env.NODE_ENV || "").trim() === "production";
 
 // utils
 export const DATE_FORMAT = "dd-MM-yyyy";
+export const DATE_FORMAT_MOMENT = "DD-MM-yyyy";
 export const DATE_HOUR_FORMAT = "YYYY-MM-DD HH:mm:ss";
 export const YESTERDAY = ((d) => new Date(d.setDate(d.getDate() - 1)))(
   new Date()
