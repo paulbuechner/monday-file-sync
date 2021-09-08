@@ -68,7 +68,7 @@ export async function fileUpload(
   // make request
   try {
     const res = await fetch(url, options);
-    const json: FileUploadMutationResponse = await res.json();
+    const json = (await res.json()) as FileUploadMutationResponse;
 
     logger.upload(
       `✅ File has been uploaded succesfully. <br> • ${json.data.add_file_to_column.name} <br><br> Please update the Board accordingly.`,
