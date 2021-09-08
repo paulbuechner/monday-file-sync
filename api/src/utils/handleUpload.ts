@@ -1,7 +1,8 @@
 /* eslint-disable no-await-in-loop */
-import { LOG_CHANGE_PATH } from "../constants";
+import { LOG_CHANGE_PATH, LOG_UPLOAD_PATH } from "../constants";
 import { getAllBoards } from "../queries/board";
 import { fileUpload } from "../resolvers/fileUpload";
+import { filterPath } from "./filter";
 import { getUploadDir } from "./getUploadDir";
 import { readLogs } from "./logReader";
 import { logger } from "./logger";
@@ -11,6 +12,9 @@ import { sendNotificationReport } from "./notificationReport";
 export async function handleUpload(): Promise<void> {
   // read in file changes
   const files = await readLogs(LOG_CHANGE_PATH);
+
+  // read in uploads (upload protection for forced restart)
+  const uploads = await readLogs(LOG_UPLOAD_PATH);
 
   if (files) {
     // get all boards
@@ -26,11 +30,16 @@ export async function handleUpload(): Promise<void> {
     }
 
     for (const f of files) {
-      const dir = await getUploadDir(f.msg, boards);
+      if (
+        // upload protection: only upload files that are not already uploaded
+        !uploads?.filter((u) => u.msg.includes(filterPath(f.msg)!.filename))
+      ) {
+        const dir = await getUploadDir(f.msg, boards);
 
-      if (dir) {
-        // upload file to monday
-        await fileUpload(f.msg, dir);
+        if (dir) {
+          // upload file to monday
+          await fileUpload(f.msg, dir);
+        }
       }
     }
   }
