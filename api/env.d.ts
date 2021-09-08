@@ -3,7 +3,6 @@ declare namespace NodeJS {
     NODE_ENV: string;
     DEV_MONDAY_API_KEY: string;
     DEV_WATCH_PATH: string;
-    DEV_WATCH_FILE: string;
     DEV_NOTIFICATION_IDS: string;
     DEV_BOARD_CARRIER_ID: string;
     PROD_MONDAY_API_KEY: string;
