@@ -13,7 +13,6 @@ export const YESTERDAY = ((d) => new Date(d.setDate(d.getDate() - 1)))(
 export const {
   DEV_MONDAY_API_KEY,
   DEV_WATCH_PATH,
-  DEV_WATCH_FILE,
   DEV_NOTIFICATION_IDS,
   DEV_BOARD_CARRIER_ID,
 
