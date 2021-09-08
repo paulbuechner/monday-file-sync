@@ -17,13 +17,13 @@
     "watch:file:prod": "set NODE_ENV=production && nodemon -r dotenv/config --exec ts-node",
     "start": "set NODE_ENV=production && node dist/index.js",
     "start:ts": "set NODE_ENV=production && ts-node src/index.ts",
-    "pm2:start:prod": "pm2 start pm2.config.js --env production",
-    "pm2:restart:prod": "pm2 delete API && pm2 start pm2.config.js --env production",
-    "pm2:start:dev": "pm2 start pm2.config.js --env development",
-    "pm2:restart:dev": "pm2 delete API && pm2 start pm2.config.js --env development",
+    "dev:ts": "nodemon --watch 'index.ts' --exec ts-node src/index.ts --verbose",
+    "pm2:start:prod": "pm2 start pm2.config.js --env production && pm2 monit",
+    "pm2:restart:prod": "pm2 delete API && npm run build && pm2 start pm2.config.js --env production && pm2 monit",
+    "pm2:start:dev": "pm2 start pm2.config.js --env development && pm2 monit",
+    "pm2:restart:dev": "pm2 delete API && npm run build && pm2 start pm2.config.js --env development && pm2 monit",
     "pm2:stop": "pm2 stop pm2.config.js",
-    "pm2:delete": "pm2 delete pm2.config.js",
-    "dev": "nodemon --watch 'index.ts' --exec ts-node src/index.ts --verbose"
+    "pm2:delete": "pm2 delete pm2.config.js"
   },
   "dependencies": {
     "chokidar": "3.5.2",
