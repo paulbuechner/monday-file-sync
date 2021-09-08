@@ -33,7 +33,6 @@ To run this project, you will need to add the following environment variables to
 
 - `DEV_MONDAY_API_KEY`: Monday API Key
 - `DEV_WATCH_PATH`: Path/Directory to listen for file changes (default to: `__tests__`)
-- `DEV_WATCH_FILE`: File (including relative path) to listen for changes
 - `DEV_NOTIFICATION_IDS`: User IDs to receive monday notifiactions
 - `DEV_BOARD_CARRIER_ID`: Board Carrier ID to include in notification when no board was found
 
@@ -106,7 +105,6 @@ To test individual functionalities run: `npm run watch:file:dev path/to/file` (r
 ## Flowchart
 
 ![diagram](https://user-images.githubusercontent.com/45827409/132483419-69923a0c-28d5-47f3-8e61-f6f9675c6fdb.png)
-
 
 ## Contributing
 
