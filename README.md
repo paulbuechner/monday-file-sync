@@ -17,98 +17,25 @@ Clone or fork this repository then execute:
 ```bash
   # Install repo dependencies
   npm install
-
-  # Install api dependencies
-  cd api
-  npm install
 ```
 
-Also make sure to install the global dependecies listet in `api/package.json` -> `global dependencies`
+## Structure
 
-## Environment Variables
+| Codebase   |  Description  |
+| :--------- | :-----------: |
+| [api](api) | File Sync API |
 
-To run this project, you will need to add the following environment variables to your .env file
+## Roadmap
 
-#### Development Environment
+- App to control file-sync functionalities directly through monday
 
-- `DEV_MONDAY_API_KEY`: Monday API Key
-- `DEV_WATCH_PATH`: Path/Directory to listen for file changes (default to: `__tests__`)
-- `DEV_NOTIFICATION_IDS`: User IDs to receive monday notifiactions
-- `DEV_BOARD_CARRIER_ID`: Board Carrier ID to include in notification when no board was found
-
-#### Production Environment
-
-- `PROD_MONDAY_API_KEY`: Monday API Key
-- `PROD_WATCH_PATH`: Path/Directory to listen for file changes
-- `PROD_NOTIFICATION_IDS`: User IDs to receive monday notifiactions
-- `PROD_BOARD_CARRIER_ID`: Board Carrier ID to include in notification when no board was found
-
-## API
-
-```javascript
-// Example of a typical implementation structure
-
-// Initialize watcher.
-const watcher = chokidar.watch(
-  __prod__ ? `${PROD_WATCH_PATH!}/**/*.pdf` : `${DEV_WATCH_PATH!}/**/*.pdf`,
-  {
-    ignored: /(^|[\/\\])\../, // ignore dotfiles
-    persistent: true
-  }
-);
-
-// Log detected file changes
-watcher.on("change", (event, _) => {
-  logger.change(event);
-});
-
-/*  *    *    *    *    *    *
- *  ┬    ┬    ┬    ┬    ┬    ┬
- *  │    │    │    │    │    │
- *  │    │    │    │    │    └ day of week (0 - 7) (0 or 7 is Sun)
- *  │    │    │    │    └───── month (1 - 12)
- *  │    │    │    └────────── day of month (1 - 31)
- *  │    │    └─────────────── hour (0 - 23)
- *  │    └──────────────────── minute (0 - 59)
- *  └───────────────────────── second (0 - 59, OPTIONAL)
- */
-schedule.scheduleJob("* * 2 * * *", () => {
-  handleUpload();
-});
-```
-
-`chokidar.watch(paths, [options])`
-
-- `paths` (string or array of strings). Paths to files, dirs to be watched
-  recursively, or glob patterns. - Note: globs must not contain windows separators (`\`),
-  because that's how they work by the standard —
-  you'll need to replace them with forward slashes (`/`). - Note 2: for additional glob documentation, check out low-level
-  library: [picomatch](https://github.com/micromatch/picomatch).
-- `options` (object) Options object as defined here: [Chokidar](https://github.com/paulmillr/chokidar)
-
-## Usage
-
-The application is wrapped with `PM2` to keep the application running and provide better monitoring. For more information visit: [PM2 Documentation](https://pm2.keymetrics.io/docs/usage/quick-start/)
-
-```bash
-cd api
-
-# Build the application
-npm run build
-
-# Run the app in dev-mode
-npm run pm2:start:dev
-```
-
-To test individual functionalities run: `npm run watch:file:dev path/to/file` (relative)
-
-## Flowchart
-
-![diagram](https://user-images.githubusercontent.com/45827409/132483419-69923a0c-28d5-47f3-8e61-f6f9675c6fdb.png)
+- Support for Docker (api)
 
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+Please read [CONTRIBUTING.md](https://github.com/paulbuechner/monday-file-sync/CONTRIBUTING.md) for details on this project.
 
 ## License
 
