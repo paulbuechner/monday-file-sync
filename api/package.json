@@ -60,6 +60,9 @@
     "global dependencies": {
       "pm2": "npm install pm2 -g",
       "ts-node": "npm install ts-node -g"
+    },
+    "pm2 dependencies": {
+      "pm2-logrotate": "pm2 install pm2-logrotate"
     }
   }
 }
