@@ -31,7 +31,9 @@ watcher.on("change", (event, _) => {
  *  │    │    └─────────────── hour (0 - 23)
  *  │    └──────────────────── minute (0 - 59)
  *  └───────────────────────── second (0 - 59, OPTIONAL)
+ *
+ *  default: every day at 2am - 0 2 * * *
  */
-schedule.scheduleJob("* * 2 * * *", () => {
+schedule.scheduleJob("0 2 * * *", () => {
   handleUpload();
 });

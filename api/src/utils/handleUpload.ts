@@ -32,7 +32,8 @@ export async function handleUpload(): Promise<void> {
     for (const f of files) {
       if (
         // upload protection: only upload files that are not already uploaded
-        !uploads?.filter((u) => u.msg.includes(filterPath(f.msg)!.filename))
+        !uploads ||
+        !uploads.some((u) => u.msg.includes(filterPath(f.msg)!.filename))
       ) {
         const dir = await getUploadDir(f.msg, boards);
 
@@ -42,10 +43,10 @@ export async function handleUpload(): Promise<void> {
         }
       }
     }
-  }
 
-  // send notifications
-  await sendNotificationReport();
+    // send notifications
+    await sendNotificationReport();
+  }
 }
 
 // eslint-disable-next-line @typescript-eslint/no-floating-promises
