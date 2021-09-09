@@ -17,9 +17,6 @@ Monday File Sync allows you to keep your local files synchronized with your mond
 Clone or fork this repository then execute:
 
 ```bash
-  # Install repo dependencies
-  npm install
-
   # Install api dependencies
   cd api
   npm install
