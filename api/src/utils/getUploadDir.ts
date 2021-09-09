@@ -40,7 +40,7 @@ export async function getUploadDir(
 
   if (boardId.length === 0) {
     logger.error(
-      `⛔ Oh no! Something went wrong: Couldn't find boardId. Did you forgot to include the Search Parameter in the boards description? <br> • ${filteredPath.filename} <br><br> Please Update the Board manually.`
+      `⛔ Oh no! Something went wrong: Couldn't find boardId. <br><br> Reason 1: Did you forgot to include the Search Parameter (dir name) in the boards description? <br>  Reason 2: Board for given file doesn't exists. <br><br> • ${filteredPath.filename} <br><br> Please Update the Board manually.`
     );
 
     return;
