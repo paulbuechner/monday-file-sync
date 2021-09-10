@@ -32,14 +32,14 @@ Currently only added configuration boilerplate. Not actually working.
 
 To run this project, you will need to add the following environment variables to your .env file
 
-#### Development Environment
+### Development Environment
 
 - `DEV_MONDAY_API_KEY`: Monday API Key
 - `DEV_WATCH_PATH`: Path/Directory to listen for file changes (default to: `__tests__`)
 - `DEV_NOTIFICATION_IDS`: User IDs to receive monday notifiactions
 - `DEV_BOARD_CARRIER_ID`: Board Carrier ID to include in notification when no board was found
 
-#### Production Environment
+### Production Environment
 
 - `PROD_MONDAY_API_KEY`: Monday API Key
 - `PROD_WATCH_PATH`: Path/Directory to listen for file changes
