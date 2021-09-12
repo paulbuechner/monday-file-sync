@@ -22,7 +22,7 @@ Clone or fork this repository then execute:
   npm install
 ```
 
-Also make sure to install the global dependecies listet in `api/package.json` -> `global dependencies`
+Also make sure to install the global dependencies listet in `api/package.json` -> `global dependencies`
 
 ### Docker
 
@@ -75,7 +75,7 @@ watcher.on("change", (event, _) => {
  *  │    └──────────────────── minute (0 - 59)
  *  └───────────────────────── second (0 - 59, OPTIONAL)
  */
-schedule.scheduleJob("* * 2 * * *", () => {
+schedule.scheduleJob("0 2 * * *", () => {
   handleUpload();
 });
 ```
@@ -91,7 +91,7 @@ schedule.scheduleJob("* * 2 * * *", () => {
 
 ## Usage
 
-The application is wrapped with `PM2` to keep the application running and provide better monitoring. For more information visit: [PM2 Documentation](https://pm2.keymetrics.io/docs/usage/quick-start/)
+The application is wrapped with `PM2` to keep the application running and provide better monitoring. For more information visit: [PM2 Documentation](https://pm2.keymetrics.io/docs/usage/quick-start/). Chokidar will initialize a watcher detecting file changes over the day and will log them under `logs/changes`. The scheduled node job `/index.ts` will take care of uploading the files at the specified time (default: 2am).
 
 ```bash
 cd api
