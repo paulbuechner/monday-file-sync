@@ -91,7 +91,11 @@ schedule.scheduleJob("0 2 * * *", () => {
 
 ## Usage
 
-The application is wrapped with `PM2` to keep the application running and provide better monitoring. For more information visit: [PM2 Documentation](https://pm2.keymetrics.io/docs/usage/quick-start/). Chokidar will initialize a watcher detecting file changes over the day and will log them under `logs/changes`. The scheduled node job `/index.ts` will take care of uploading the files at the specified time (default: 2am).
+The application is wrapped with `PM2` to keep the application running and provide better monitoring. For more information visit: [PM2 Documentation](https://pm2.keymetrics.io/docs/usage/quick-start/). 
+
+`Chokidar` will initialize a watcher detecting file changes over the day and will log them under `logs/changes`. The scheduled node job `/index.ts` will take care of uploading the files at the specified time (default: 2am).
+
+> To test individual functionalities run: `npm run watch:file:dev/prod path/to/file` (relative)
 
 ```bash
 cd api
@@ -105,8 +109,6 @@ npm run pm2:start:dev
 # Run the app in prod-mode
 npm run pm2:start:prod
 ```
-
-To test individual functionalities run: `npm run watch:file:dev/prod path/to/file` (relative)
 
 ## Flowchart
 
