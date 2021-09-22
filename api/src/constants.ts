@@ -1,14 +1,15 @@
-import { format } from "date-fns";
+import { format, subDays } from "date-fns";
 
 export const __prod__ = (process.env.NODE_ENV || "").trim() === "production";
 
 // utils
 export const DATE_FORMAT = "dd-MM-yyyy";
+
 export const DATE_FORMAT_MOMENT = "DD-MM-yyyy";
+
 export const DATE_HOUR_FORMAT = "YYYY-MM-DD HH:mm:ss";
-export const YESTERDAY = ((d) => new Date(d.setDate(d.getDate() - 1)))(
-  new Date()
-);
+
+export const YESTERDAY = subDays(new Date(), 1);
 
 // env
 export const {
@@ -43,4 +44,5 @@ export const LOG_CHANGE_PATH = `logs/${LOG_DIR_PREFIX}/change/change-${format(
 
 // monday
 export const API_V2_ENDPOINT = "https://api.monday.com/v2";
+
 export const API_V2_FILE_ENDPOINT = "https://api.monday.com/v2/file";
