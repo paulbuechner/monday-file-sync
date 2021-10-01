@@ -35,7 +35,7 @@ Clone or fork this repository then execute:
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
-Please read [CONTRIBUTING.md](https://github.com/paulbuechner/monday-file-sync/CONTRIBUTING.md) for details on this project.
+Please read [CONTRIBUTING.md](https://github.com/paulbuechner/monday-file-sync/blob/main/CONTRIBUTING.md) for details on this project.
 
 ## License
 
