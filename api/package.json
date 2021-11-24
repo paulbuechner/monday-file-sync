@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "chokidar": "3.5.2",
-    "date-fns": "2.25.0",
+    "date-fns": "2.26.0",
     "dotenv-safe": "8.2.0",
     "event-stream": "4.0.1",
     "monday-sdk-js": "0.1.3",
