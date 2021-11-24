@@ -40,7 +40,7 @@
   "devDependencies": {
     "@commitlint/cli": "14.1.0",
     "@commitlint/config-conventional": "14.1.0",
-    "@types/event-stream": "3.3.34",
+    "@types/event-stream": "4.0.0",
     "@types/monday-sdk-js": "0.1.2",
     "@types/node": "16.11.7",
     "@types/node-fetch": "2.5.12",
