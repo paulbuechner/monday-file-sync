@@ -26,7 +26,7 @@
     "pm2:delete": "pm2 delete pm2.config.js"
   },
   "dependencies": {
-    "chokidar": "3.5.2",
+    "chokidar": "3.5.3",
     "date-fns": "2.28.0",
     "dotenv-safe": "8.2.0",
     "event-stream": "4.0.1",
