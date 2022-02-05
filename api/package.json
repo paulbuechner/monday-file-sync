@@ -38,8 +38,8 @@
     "winston-daily-rotate-file": "4.6.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "15.0.0",
-    "@commitlint/config-conventional": "15.0.0",
+    "@commitlint/cli": "16.1.0",
+    "@commitlint/config-conventional": "16.0.0",
     "@types/event-stream": "4.0.0",
     "@types/monday-sdk-js": "0.1.3",
     "@types/node": "16.11.21",
